@@ -5,7 +5,10 @@ def dec_to_binary(n):
         binaryNum = binaryNum + str(n%2)
         n = int(n / 2)
 
-    return "".join(binaryNum[::-1])
+    bin = "".join(binaryNum[::-1])
+    bin = "0"*(32-len(bin))+bin
+
+    return bin 
 
 def binary_to_decimal(number):
     decimal = 0
@@ -15,7 +18,7 @@ def binary_to_decimal(number):
     
     return decimal
 
-def add_binary(n1, n2):
+def add_decimal(n1, n2):
     n1 = dec_to_binary(n1)
     n2 = dec_to_binary(n2)
 
@@ -48,6 +51,70 @@ def add_binary(n1, n2):
 
     if carry!=0:
         res = '1' + res
+
+    print(res)
+    print(binary_to_decimal(res))
+
+def sub_decimal(num1, num2):
+
+    n1 = dec_to_binary(num1)
+    n2 = dec_to_binary(num2)
+
+    one_s=''
+    #take 1s of num2
+    for i in range(len(n2)):
+        if(n2[i]=='0'):
+            one_s+='1'
+        else:
+            one_s+='0'
+
+    two_s=''
+    flag=1
+    #take 2s of num2
+    for i in range(len(one_s)-1, -1, -1):
+        if flag==1:
+            if(one_s[i]=='0'):
+                two_s = '1'+two_s
+                flag=0
+            else:
+                two_s = '0'+two_s
+        else:
+            two_s = one_s[i]+two_s
+
+    n1 = n1
+    n2 = two_s
+
+    max_len = max(len(n1), len(n2))
+
+    n1 = n1.zfill(max_len)
+    n2 = n2.zfill(max_len)
+
+    res = ""
+    carry = 0
+
+    for i in range(max_len - 1, -1, -1):
+        re = carry
+        if n1[i] == '1':
+            re = re+1
+        else:
+           re = re+0
+        if n2[i] == '1':
+          re = re+1
+        else:
+            re = re+0
+        if re%2==1:
+            res = '1' + res
+        else:
+            res = '0' + res
+        if re<2:
+            carry = 0
+        else:
+            carry = 1
+
+    if carry!=0:
+        res = '1' + res
+
+    res = res[len(res)-32:]
 
     print(res)
     print(binary_to_decimal(res))
