@@ -19,8 +19,6 @@ def binary_to_decimal(number):
     return decimal
 
 def add_decimal(n1, n2):
-    n1 = dec_to_binary(n1)
-    n2 = dec_to_binary(n2)
 
     max_len = max(len(n1), len(n2))
 
@@ -52,13 +50,12 @@ def add_decimal(n1, n2):
     if carry!=0:
         res = '1' + res
 
-    print(res)
-    print(binary_to_decimal(res))
+    return res
 
 def sub_decimal(num1, num2):
 
-    n1 = dec_to_binary(num1)
-    n2 = dec_to_binary(num2)
+    n1 = num1
+    n2 = num2
 
     one_s=''
     #take 1s of num2
@@ -116,5 +113,23 @@ def sub_decimal(num1, num2):
 
     res = res[len(res)-32:]
 
-    print(res)
-    print(binary_to_decimal(res))
+    return res
+
+
+def mul_decimal(num1, num2):
+
+    arr = []
+    offset = '0'
+    for c in reversed(num2):
+
+        # num1 = num1[len(num1)-32:]
+        if c == '1':
+            arr.append(num1)
+        
+        num1 = num1+offset
+
+    tot='0'
+    for ele in arr:
+        tot = add_decimal(tot, ele)
+    
+    return tot
