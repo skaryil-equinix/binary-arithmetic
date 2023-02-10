@@ -1,14 +1,45 @@
 
 def dec_to_binary(n):
     binaryNum = ""
-    while (n > 0):
-        binaryNum = binaryNum + str(n%2)
-        n = int(n / 2)
+    if(n>0):
+        while (n > 0):
+            binaryNum = binaryNum + str(n%2)
+            n = int(n / 2)
 
-    bin = "".join(binaryNum[::-1])
-    bin = "0"*(32-len(bin))+bin
+        bin = "".join(binaryNum[::-1])
+        bin = "0"*(32-len(bin))+bin
+    
+    else:
+        n=-n
+        while (n > 0):
+            binaryNum = binaryNum + str(n%2)
+            n = int(n / 2)
 
-    return bin 
+        bin = "".join(binaryNum[::-1])
+        bin = "0"*(32-len(bin))+bin
+
+        one_s=''
+        #take 1s
+        for i in range(len(bin)):
+            if(bin[i]=='0'):
+                one_s+='1'
+            else:
+                one_s+='0'
+
+        two_s=''
+        flag=1
+        #take 2s
+        for i in range(len(one_s)-1, -1, -1):
+            if flag==1:
+                if(one_s[i]=='0'):
+                    two_s = '1'+two_s
+                    flag=0
+                else:
+                    two_s = '0'+two_s
+            else:
+                two_s = one_s[i]+two_s
+
+    return two_s 
 
 def binary_to_decimal(number):
     decimal = 0
@@ -133,3 +164,6 @@ def mul_decimal(num1, num2):
         tot = add_decimal(tot, ele)
     
     return tot
+
+
+print(dec_to_binary(-10))
