@@ -82,6 +82,31 @@ def add_binary(n1, n2):
 
     return tot
 
+def sub_binary(n1, n2):
+
+    #taking 1s of n2
+    for i in range(0,32):
+        if n2[i]==0:
+            n2[i]=1
+        else:
+            n2[i]=0
+
+    #taking 2s of n2
+    idx=31
+    while(idx>=0 and n2[idx]==1):
+        n2[idx]=0
+        idx-=1
+    if(idx>=0):
+        n2[idx]=1
+
+    #now same logic as adding
+    tot = [0 for i in range(0,32)]
+    carry = 0
+    for i in range(31,-1,-1):
+        tot[i] = XOR(XOR(n1[i],n2[i]), carry)
+        carry = n1[i]&n2[i] or n1[i]&carry or n2[i]&carry
+
+    return tot
 
 def sub_decimal(num1, num2):
 
