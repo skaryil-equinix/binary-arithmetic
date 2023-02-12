@@ -74,6 +74,7 @@ def XOR (a, b):
 
 def add_binary(num1, num2):
 
+    #taking a copy of the input parameters, so that input arguments are not modified due to call by reference
     n1 = num1[:]
     n2 = num2[:]
 
@@ -87,8 +88,10 @@ def add_binary(num1, num2):
 
 def sub_binary(num1, num2):
 
+    #taking a copy of the input parameters, so that input arguments are not modified due to call by reference
     n1 = num1[:]
     n2 = num2[:]
+
     #taking 1s of n2
     for i in range(0,32):
         if n2[i]==0:
@@ -114,7 +117,11 @@ def sub_binary(num1, num2):
     return tot
 
 
-def mul_binary(num1, num2):
+def mul_binary(n1, n2):
+
+    #taking a copy of the input parameters, so that input arguments are not modified due to call by reference
+    num1 = n1[:]
+    num2 = n2[:]
 
     tot = [0 for i in range(0,32)]
 
@@ -128,7 +135,12 @@ def mul_binary(num1, num2):
     
     return tot
 
-def div_binary(num1, num2):
+def div_binary(n1, n2):
+
+    #taking a copy of the input parameters, so that input arguments are not modified due to call by reference
+    num1 = n1[:]
+    num2 = n2[:]
+
     res = [0 for i in range(0,32)]
     
     while( binary_to_decimal(sub_binary(num1, num2)) >= 0):
@@ -136,3 +148,24 @@ def div_binary(num1, num2):
         res = add_binary(res, dec_to_binary(1))
         
     return res
+
+def mod_binary(n1):
+
+    if n1[0]==0:
+        return n1
+    else:
+        #taking 1s of n1
+        for i in range(0,32):
+            if n1[i]==0:
+                n1[i]=1
+            else:
+                n1[i]=0
+
+        #taking 2s of n1
+        idx=31
+        while(idx>=0 and n1[idx]==1):
+            n1[idx]=0
+            idx-=1
+        if(idx>=0):
+            n1[idx]=1
+        return n1
