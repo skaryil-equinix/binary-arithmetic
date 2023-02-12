@@ -31,15 +31,40 @@ def dec_to_binary(num):
             bin[idx]=1
     return bin
 
+def binary_to_decimal(bin):
 
+    if(len(bin)!=32):
+        print("Invalid Input\nInput should be an array of size 32")
+        return
+    if(bin[0]==0):
+        dec = 0
+        for i in range(0,32):
+            dec = dec*2 + bin[i]
+        
+        return dec
+    
+    else:
+        #taking 1s
+        for i in range(0,32):
+            if bin[i]==0:
+                bin[i]=1
+            else:
+                bin[i]=0
 
-def binary_to_decimal(number):
-    decimal = 0
-    
-    for digit in number:
-        decimal = decimal*2 + int(digit)
-    
-    return decimal
+        #taking 2s
+        idx=31
+        while(idx>=0 and bin[idx]==1):
+            bin[idx]=0
+            idx-=1
+        if(idx>=0):
+            bin[idx]=1
+        
+        #finding the decimal number
+        dec = 0
+        for i in range(0,32):
+            dec = dec*2 + bin[i]
+        
+        return -dec
 
 def add_decimal(n1, n2):
 
