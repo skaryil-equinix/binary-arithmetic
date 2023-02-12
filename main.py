@@ -72,7 +72,10 @@ def XOR (a, b):
     else:
         return 0
 
-def add_binary(n1, n2):
+def add_binary(num1, num2):
+
+    n1 = num1[:]
+    n2 = num2[:]
 
     tot = [0 for i in range(0,32)]
     carry = 0
@@ -82,8 +85,10 @@ def add_binary(n1, n2):
 
     return tot
 
-def sub_binary(n1, n2):
+def sub_binary(num1, num2):
 
+    n1 = num1[:]
+    n2 = num2[:]
     #taking 1s of n2
     for i in range(0,32):
         if n2[i]==0:
@@ -108,7 +113,7 @@ def sub_binary(n1, n2):
 
     return tot
 
- 
+
 def mul_binary(num1, num2):
 
     tot = [0 for i in range(0,32)]
@@ -123,3 +128,11 @@ def mul_binary(num1, num2):
     
     return tot
 
+def div_binary(num1, num2):
+    res = [0 for i in range(0,32)]
+    
+    while( binary_to_decimal(sub_binary(num1, num2)) >= 0):
+        num1 = sub_binary(num1, num2)
+        res = add_binary(res, dec_to_binary(1))
+        
+    return res
