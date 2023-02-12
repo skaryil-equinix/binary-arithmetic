@@ -66,39 +66,22 @@ def binary_to_decimal(bin):
         
         return -dec
 
-def add_decimal(n1, n2):
+def XOR (a, b):
+    if a != b:
+        return 1
+    else:
+        return 0
 
-    max_len = max(len(n1), len(n2))
+def add_binary(n1, n2):
 
-    n1 = n1.zfill(max_len)
-    n2 = n2.zfill(max_len)
-
-    res = ""
+    tot = [0 for i in range(0,32)]
     carry = 0
+    for i in range(31,-1,-1):
+        tot[i] = XOR(XOR(n1[i],n2[i]), carry)
+        carry = n1[i]&n2[i] or n1[i]&carry or n2[i]&carry
 
-    for i in range(max_len - 1, -1, -1):
-        re = carry
-        if n1[i] == '1':
-            re = re+1
-        else:
-           re = re+0
-        if n2[i] == '1':
-          re = re+1
-        else:
-            re = re+0
-        if re%2==1:
-            res = '1' + res
-        else:
-            res = '0' + res
-        if re<2:
-            carry = 0
-        else:
-            carry = 1
+    return tot
 
-    if carry!=0:
-        res = '1' + res
-
-    return res
 
 def sub_decimal(num1, num2):
 
