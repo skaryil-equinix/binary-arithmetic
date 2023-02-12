@@ -1,169 +1,171 @@
 
-def dec_to_binary(n):
-    binaryNum = ""
-    if(n>0):
-        while (n > 0):
-            binaryNum = binaryNum + str(n%2)
-            n = int(n / 2)
+def dec_to_binary(num):
 
-        bin = "".join(binaryNum[::-1])
-        bin = "0"*(32-len(bin))+bin
+    bin = [0 for i in range(0,32)]
+    idx=31
+    if (num>0):
+        while(idx>=0 and num>0):
+            bin[idx]=num%2
+            idx-=1
+            num= int(num/2)
+    else:
+        num=-num
+        while(idx>=0 and num>0):
+            bin[idx]=num%2
+            idx-=1
+            num= int(num/2)
+
+        #taking 1s
+        for i in range(0,32):
+            if bin[i]==0:
+                bin[i]=1
+            else:
+                bin[i]=0
+
+        #taking 2s
+        idx=31
+        while(idx>=0 and bin[idx]==1):
+            bin[idx]=0
+            idx-=1
+        if(idx>=0):
+            bin[idx]=1
+    return bin
+
+def binary_to_decimal(bin):
+
+    if(len(bin)!=32):
+        print("Invalid Input\nInput should be an array of size 32")
+        return
+    if(bin[0]==0):
+        dec = 0
+        for i in range(0,32):
+            dec = dec*2 + bin[i]
+        
+        return dec
     
     else:
-        n=-n
-        while (n > 0):
-            binaryNum = binaryNum + str(n%2)
-            n = int(n / 2)
-
-        bin = "".join(binaryNum[::-1])
-        bin = "0"*(32-len(bin))+bin
-
-        one_s=''
-        #take 1s
-        for i in range(len(bin)):
-            if(bin[i]=='0'):
-                one_s+='1'
+        #taking 1s
+        for i in range(0,32):
+            if bin[i]==0:
+                bin[i]=1
             else:
-                one_s+='0'
+                bin[i]=0
 
-        two_s=''
-        flag=1
-        #take 2s
-        for i in range(len(one_s)-1, -1, -1):
-            if flag==1:
-                if(one_s[i]=='0'):
-                    two_s = '1'+two_s
-                    flag=0
-                else:
-                    two_s = '0'+two_s
-            else:
-                two_s = one_s[i]+two_s
-
-    return two_s 
-
-def binary_to_decimal(number):
-    decimal = 0
-    
-    for digit in number:
-        decimal = decimal*2 + int(digit)
-    
-    return decimal
-
-def add_decimal(n1, n2):
-
-    max_len = max(len(n1), len(n2))
-
-    n1 = n1.zfill(max_len)
-    n2 = n2.zfill(max_len)
-
-    res = ""
-    carry = 0
-
-    for i in range(max_len - 1, -1, -1):
-        re = carry
-        if n1[i] == '1':
-            re = re+1
-        else:
-           re = re+0
-        if n2[i] == '1':
-          re = re+1
-        else:
-            re = re+0
-        if re%2==1:
-            res = '1' + res
-        else:
-            res = '0' + res
-        if re<2:
-            carry = 0
-        else:
-            carry = 1
-
-    if carry!=0:
-        res = '1' + res
-
-    return res
-
-def sub_decimal(num1, num2):
-
-    n1 = num1
-    n2 = num2
-
-    one_s=''
-    #take 1s of num2
-    for i in range(len(n2)):
-        if(n2[i]=='0'):
-            one_s+='1'
-        else:
-            one_s+='0'
-
-    two_s=''
-    flag=1
-    #take 2s of num2
-    for i in range(len(one_s)-1, -1, -1):
-        if flag==1:
-            if(one_s[i]=='0'):
-                two_s = '1'+two_s
-                flag=0
-            else:
-                two_s = '0'+two_s
-        else:
-            two_s = one_s[i]+two_s
-
-    n1 = n1
-    n2 = two_s
-
-    max_len = max(len(n1), len(n2))
-
-    n1 = n1.zfill(max_len)
-    n2 = n2.zfill(max_len)
-
-    res = ""
-    carry = 0
-
-    for i in range(max_len - 1, -1, -1):
-        re = carry
-        if n1[i] == '1':
-            re = re+1
-        else:
-           re = re+0
-        if n2[i] == '1':
-          re = re+1
-        else:
-            re = re+0
-        if re%2==1:
-            res = '1' + res
-        else:
-            res = '0' + res
-        if re<2:
-            carry = 0
-        else:
-            carry = 1
-
-    if carry!=0:
-        res = '1' + res
-
-    res = res[len(res)-32:]
-
-    return res
-
-
-def mul_decimal(num1, num2):
-
-    arr = []
-    offset = '0'
-    for c in reversed(num2):
-
-        # num1 = num1[len(num1)-32:]
-        if c == '1':
-            arr.append(num1)
+        #taking 2s
+        idx=31
+        while(idx>=0 and bin[idx]==1):
+            bin[idx]=0
+            idx-=1
+        if(idx>=0):
+            bin[idx]=1
         
-        num1 = num1+offset
+        #finding the decimal number
+        dec = 0
+        for i in range(0,32):
+            dec = dec*2 + bin[i]
+        
+        return -dec
 
-    tot='0'
-    for ele in arr:
-        tot = add_decimal(tot, ele)
-    
+def XOR (a, b):
+    if a != b:
+        return 1
+    else:
+        return 0
+
+def add_binary(num1, num2):
+
+    #taking a copy of the input parameters, so that input arguments are not modified due to call by reference
+    n1 = num1[:]
+    n2 = num2[:]
+
+    tot = [0 for i in range(0,32)]
+    carry = 0
+    for i in range(31,-1,-1):
+        tot[i] = XOR(XOR(n1[i],n2[i]), carry)
+        carry = n1[i]&n2[i] or n1[i]&carry or n2[i]&carry
+
+    return tot
+
+def sub_binary(num1, num2):
+
+    #taking a copy of the input parameters, so that input arguments are not modified due to call by reference
+    n1 = num1[:]
+    n2 = num2[:]
+
+    #taking 1s of n2
+    for i in range(0,32):
+        if n2[i]==0:
+            n2[i]=1
+        else:
+            n2[i]=0
+
+    #taking 2s of n2
+    idx=31
+    while(idx>=0 and n2[idx]==1):
+        n2[idx]=0
+        idx-=1
+    if(idx>=0):
+        n2[idx]=1
+
+    #now same logic as adding
+    tot = [0 for i in range(0,32)]
+    carry = 0
+    for i in range(31,-1,-1):
+        tot[i] = XOR(XOR(n1[i],n2[i]), carry)
+        carry = n1[i]&n2[i] or n1[i]&carry or n2[i]&carry
+
     return tot
 
 
-print(dec_to_binary(-10))
+def mul_binary(n1, n2):
+
+    #taking a copy of the input parameters, so that input arguments are not modified due to call by reference
+    num1 = n1[:]
+    num2 = n2[:]
+
+    tot = [0 for i in range(0,32)]
+
+    for i in range(31, -1, -1):
+        
+        if num2[i] == 1:
+            tot = add_binary(tot, num1)
+            
+        num1.pop(0)
+        num1.append(0)
+    
+    return tot
+
+def div_binary(n1, n2):
+
+    #taking a copy of the input parameters, so that input arguments are not modified due to call by reference
+    num1 = n1[:]
+    num2 = n2[:]
+
+    res = [0 for i in range(0,32)]
+    
+    while( binary_to_decimal(sub_binary(num1, num2)) >= 0):
+        num1 = sub_binary(num1, num2)
+        res = add_binary(res, dec_to_binary(1))
+        
+    return res
+
+def mod_binary(n1):
+
+    if n1[0]==0:
+        return n1
+    else:
+        #taking 1s of n1
+        for i in range(0,32):
+            if n1[i]==0:
+                n1[i]=1
+            else:
+                n1[i]=0
+
+        #taking 2s of n1
+        idx=31
+        while(idx>=0 and n1[idx]==1):
+            n1[idx]=0
+            idx-=1
+        if(idx>=0):
+            n1[idx]=1
+        return n1
